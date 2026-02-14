@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine 💘</title>
 
 <style>
@@ -42,8 +43,10 @@ button:hover{
 
 /* Puzzle */
 .puzzle{
-  width:300px;
-  height:300px;
+  width:90%;
+  max-width:300px;
+  height:90vw;
+  max-height:300px;
   margin:20px auto;
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -67,6 +70,22 @@ button:hover{
     transform:translateY(110vh);
     opacity:0;
   }
+}
+  @media (max-width:768px){
+
+  h1{
+    font-size:24px;
+  }
+
+  h2{
+    font-size:18px;
+  }
+
+  button{
+    font-size:15px;
+    padding:12px 20px;
+  }
+
 }
 </style>
 </head>
@@ -213,7 +232,8 @@ function showFinal(){
 
     let img=document.createElement("img");
     img.src="photo8.jpg"; 
-  img.style.width="300px"; 
+  img.style.width="90%";
+  img.style.maxWidth="350px";
   img.style.margin="10px";
   img.style.borderRadius="15px";
   container.appendChild(img);
@@ -267,3 +287,4 @@ function startConfetti(){
 </script>
 </body>
 </html>
+
