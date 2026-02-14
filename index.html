@@ -133,13 +133,13 @@ const finalScreen=document.getElementById("final");
   
   const firstScreen = document.getElementById("firstScreen");
 
-function goToQuizStart(){
+window.goToQuizStart = function(){
   firstScreen.classList.add("hidden");
   secondChance.classList.add("hidden");
   quizStart.classList.remove("hidden");
 }
 
-function showSecondChance(){
+window.showSecondChance = function(){
   firstScreen.classList.add("hidden");
   secondChance.classList.remove("hidden");
 }
@@ -293,6 +293,7 @@ function startConfetti(){
 </script>
 </body>
 </html>
+
 
 
 
