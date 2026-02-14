@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💘</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#3b0000,#8b0000);
+  color:white;
+  text-align:center;
+  overflow-x:hidden;
+}
+
+h1,h2{animation:fadeIn 1.5s;}
+
+button{
+  padding:12px 25px;
+  margin:10px;
+  font-size:16px;
+  border:none;
+  border-radius:25px;
+  cursor:pointer;
+  background:#ff4d6d;
+  color:white;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#ff1a4d;
+  transform:scale(1.1);
+}
+
+.hidden{display:none;}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(-20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* Puzzle */
+.puzzle{
+  width:300px;
+  height:300px;
+  margin:20px auto;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(3,1fr);
+}
+
+.piece{
+  background-size:300px 300px;
+  opacity:0;
+  animation:reveal 0.6s forwards;
+}
+
+@keyframes reveal{
+  from{opacity:0;transform:scale(0);}
+  to{opacity:1;transform:scale(1);}
+}
+
+/* Falling hearts */
+@keyframes fall{
+  to{
+    transform:translateY(110vh);
+    opacity:0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="intro">
+  <h1>Hey Utkarsh, Will you be my Valentine? 💖</h1>
+  <button id="firstYesBtn">Yes ❤️</button>
+  <button id="firstNoBtn">No 😏</button>
+</div>
+
+<div id="secondChance" class="hidden">
+  <h2>100% YES 😘💕 &nbsp;&nbsp;&nbsp; NO 😈</h2>
+  <button id="finalYesBtn">YES 😘💕</button>
+  <button id="movingNo">NO 😈</button>
+</div>
+
+<div id="quizStart" class="hidden">
+  <h2>Not so easily… take this fun quiz 😏💕</h2>
+  <button id="startQuizBtn">Start Quiz 💌</button>
+</div>
+
+<div id="quiz" class="hidden">
+  <h2 id="question"></h2>
+  <div id="options"></div>
+  <div id="puzzleContainer"></div>
+  <button id="nextBtn" class="hidden">Next 💘</button>
+</div>
+
+<div id="final" class="hidden">
+  <div id="finalImages" style="display:flex;flex-wrap:wrap;justify-content:center;"></div>
+</div>
+
+<audio id="q4song" src="song1.mp3"></audio>
+<audio id="finalSong" src="finalsong.mp3"></audio>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+const intro=document.getElementById("intro");
+const secondChance=document.getElementById("secondChance");
+const quizStart=document.getElementById("quizStart");
+const quiz=document.getElementById("quiz");
+const finalScreen=document.getElementById("final");
+
+const firstYesBtn=document.getElementById("firstYesBtn");
+const firstNoBtn=document.getElementById("firstNoBtn");
+const finalYesBtn=document.getElementById("finalYesBtn");
+const movingNo=document.getElementById("movingNo");
+const startQuizBtn=document.getElementById("startQuizBtn");
+const nextBtn=document.getElementById("nextBtn");
+
+let current=0;
+
+const questions=[
+{question:"What Nick name did you give me in Pepperfry during our training days?",options:["Sanju Baba", "50 Tola", "Jadeja"],correct:1,image:"photo1.jpg"},
+{question:"When was our first kiss?",options:["26th August", "12th September", "19th September"],correct:1,image:"photo2.jpg"},
+{question:"Which dress did I wear the first time I came to Ulhasnagar?",options:["Red Kurti", "Black t-shirt", "Blue net top"],correct:2,image:"photo3.jpg"},
+{question:"What was the song you sang for me at Veejay when you first expressed your feelings?",options:["Ek Dilruba Hai", "Teri Jhuki Nazar", "Pehle Bhi Main"],correct:0,image:"photo4.jpg"},
+{question:"What was the first thing you gifted me?",options:["Shoes", "Ring", "Earrings"],correct:2,image:"photo5.jpg"},
+{question:"Which flower did you give me when we went to Khopoli?",options:["Sunflower", "Rose", "Orchids"],correct:0,image:"photo6.jpg"},
+{question:"Where will our next trip be?",options:["Alibaug", "Matheran", "Lonavla"],correct:1,image:"photo7.jpg"}
+];
+
+firstYesBtn.onclick=()=>{intro.classList.add("hidden");quizStart.classList.remove("hidden");};
+firstNoBtn.onclick=()=>{intro.classList.add("hidden");secondChance.classList.remove("hidden");};
+finalYesBtn.onclick=()=>{secondChance.classList.add("hidden");quizStart.classList.remove("hidden");};
+
+movingNo.addEventListener("mouseover",()=>{
+  movingNo.style.position="absolute";
+  movingNo.style.left=Math.random()*window.innerWidth+"px";
+  movingNo.style.top=Math.random()*window.innerHeight+"px";
+});
+
+startQuizBtn.onclick=()=>{quizStart.classList.add("hidden");quiz.classList.remove("hidden");loadQuestion();};
+
+function loadQuestion(){
+  nextBtn.classList.add("hidden");
+  document.getElementById("puzzleContainer").innerHTML="";
+  let q=questions[current];
+  document.getElementById("question").innerText=q.question;
+  let optDiv=document.getElementById("options");
+  optDiv.innerHTML="";
+  q.options.forEach((opt,i)=>{
+    let btn=document.createElement("button");
+    btn.innerText=opt;
+    btn.onclick=()=>checkAnswer(i);
+    optDiv.appendChild(btn);
+  });
+}
+
+function checkAnswer(i){
+  let q=questions[current];
+  if(i===q.correct){
+    showPuzzle(q.image);
+    if(current===3){ playQ4Song(); }
+    else{ nextBtn.classList.remove("hidden"); }
+  }else{
+    alert("Arre aise kaise bhul gaye? 😢");
+  }
+}
+
+function showPuzzle(image){
+  let container=document.getElementById("puzzleContainer");
+  container.innerHTML="";
+  let div=document.createElement("div");
+  div.className="puzzle";
+  for(let i=0;i<9;i++){
+    let piece=document.createElement("div");
+    piece.className="piece";
+    piece.style.backgroundImage=`url(${image})`;
+    piece.style.backgroundPosition=`${-(i%3)*100}px ${-Math.floor(i/3)*100}px`;
+    piece.style.animationDelay=(i*0.1)+"s";
+    div.appendChild(piece);
+  }
+  container.appendChild(div);
+}
+
+function playQ4Song(){
+  let audio=document.getElementById("q4song");
+  audio.currentTime=62;
+  audio.play();
+  nextBtn.classList.add("hidden");
+  setTimeout(()=>{
+    audio.pause();
+    audio.currentTime=0;
+    nextBtn.classList.remove("hidden");
+  },40000);
+}
+
+nextBtn.onclick=()=>{
+  current++;
+  if(current<questions.length){ loadQuestion(); }
+  else{ showFinal(); }
+};
+
+function showFinal(){
+  quiz.classList.add("hidden");
+  finalScreen.classList.remove("hidden");
+
+  let container=document.getElementById("finalImages");
+  container.innerHTML="";
+
+    let img=document.createElement("img");
+    img.src="photo8.jpg"; 
+  img.style.width="300px"; 
+  img.style.margin="10px";
+  img.style.borderRadius="15px";
+  container.appendChild(img);
+ 
+
+  let message="Congratulations, you are officially stuck with me. I love you 😘";
+  let forever="Forever & Always ❤️";
+
+  let textDiv=document.createElement("h1");
+  textDiv.style.marginTop="30px";
+  finalScreen.appendChild(textDiv);
+
+  let foreverDiv=document.createElement("h2");
+  foreverDiv.style.opacity="0";
+  finalScreen.appendChild(foreverDiv);
+
+  let i=0;
+  let typing=setInterval(()=>{
+    textDiv.innerHTML+=message.charAt(i);
+    i++;
+    if(i>=message.length){
+      clearInterval(typing);
+      foreverDiv.innerHTML=forever;
+      foreverDiv.style.transition="2s";
+      foreverDiv.style.opacity="1";
+    }
+  },60);
+
+  let finalSong=document.getElementById("finalSong");
+  finalSong.currentTime=20;
+  finalSong.play();
+
+  startConfetti();
+}
+
+function startConfetti(){
+  setInterval(()=>{
+    let heart=document.createElement("div");
+    heart.innerHTML="❤️";
+    heart.style.position="fixed";
+    heart.style.left=Math.random()*window.innerWidth+"px";
+    heart.style.top="-20px";
+    heart.style.fontSize=(20+Math.random()*20)+"px";
+    heart.style.animation="fall 4s linear forwards";
+    document.body.appendChild(heart);
+    setTimeout(()=>{heart.remove();},4000);
+  },300);
+}
+
+});
+</script>
+</body>
+</html>
