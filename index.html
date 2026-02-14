@@ -92,15 +92,15 @@ button:hover{
 
 <body>
 
-<div id="intro">
-  <h1>Hey Utkarsh, Will you be my Valentine? 💖</h1>
-  <button id="firstYesBtn">Yes ❤️</button>
-  <button id="firstNoBtn">No 😏</button>
+<div id="firstScreen">
+  <h1>Hey Utkarsh, Will you be my Valentine? 💘</h1>
+  <button onclick="goToQuizStart()">Yes ❤️</button>
+  <button onclick="showSecondChance()">No 😏</button>
 </div>
 
-<div id="secondChance" class="hidden">
-  <h2>100% YES 😘💕 &nbsp;&nbsp;&nbsp; NO 😈</h2>
-  <button id="finalYesBtn">YES 😘💕</button>
+<div id="secondChance" style="display:none;">
+  <h2>Are you sure? Think again 💭</h2>
+  <button onclick="goToQuizStart()">100% YES 😘💕</button>
   <button id="movingNo">NO 😈</button>
 </div>
 
@@ -126,15 +126,25 @@ button:hover{
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
-const intro=document.getElementById("intro");
 const secondChance=document.getElementById("secondChance");
 const quizStart=document.getElementById("quizStart");
 const quiz=document.getElementById("quiz");
 const finalScreen=document.getElementById("final");
+  
+  const firstScreen = document.getElementById("firstScreen");
 
-const firstYesBtn=document.getElementById("firstYesBtn");
-const firstNoBtn=document.getElementById("firstNoBtn");
-const finalYesBtn=document.getElementById("finalYesBtn");
+function goToQuizStart(){
+  firstScreen.classList.add("hidden");
+  secondChance.classList.add("hidden");
+  quizStart.classList.remove("hidden");
+}
+
+function showSecondChance(){
+  firstScreen.classList.add("hidden");
+  secondChance.classList.remove("hidden");
+}
+
+  
 const movingNo=document.getElementById("movingNo");
 const startQuizBtn=document.getElementById("startQuizBtn");
 const nextBtn=document.getElementById("nextBtn");
@@ -150,10 +160,6 @@ const questions=[
 {question:"Which flower did you give me when we went to Khopoli?",options:["Sunflower", "Rose", "Orchids"],correct:0,image:"photo6.jpg"},
 {question:"Where will our next trip be?",options:["Alibaug", "Matheran", "Lonavla"],correct:1,image:"photo7.jpg"}
 ];
-
-firstYesBtn.onclick=()=>{intro.classList.add("hidden");quizStart.classList.remove("hidden");};
-firstNoBtn.onclick=()=>{intro.classList.add("hidden");secondChance.classList.remove("hidden");};
-finalYesBtn.onclick=()=>{secondChance.classList.add("hidden");quizStart.classList.remove("hidden");};
 
 movingNo.addEventListener("mouseover",()=>{
   movingNo.style.position="absolute";
@@ -287,4 +293,5 @@ function startConfetti(){
 </script>
 </body>
 </html>
+
 
